@@ -16,11 +16,15 @@ export const AllProducts = [
     name: "Blue Berry",
     cost: "$120.00",
     image: fruit,
+    description: '',
+    feature: '',
   },
   {
     id: 3,
     name: "Blue Berry",
     cost: "$120.00",
     image: fruit,
+    description:'',
+    feature: '',
   },
 ];
