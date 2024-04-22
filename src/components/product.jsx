@@ -1,7 +1,8 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import React from "react";
 
-const Product = ({ image, description, feature, cost }) => {
+const Product = ({ image, description, feature, cost, handleBack }) => {
   return (
     <div className="grid gap-4">
       <div className="grid-cols-5 grid gap-2">
@@ -38,6 +39,12 @@ const Product = ({ image, description, feature, cost }) => {
         <p>&</p>
         <p>Herbs rate are per Piece</p>
       </div>
+      <button
+        onClick={handleBack}
+        className="bg-blue-500 flex items-center gap-4 w-max hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+      >
+        <ArrowLeftOutlined /> <p>Back</p>
+      </button>
     </div>
   );
 };

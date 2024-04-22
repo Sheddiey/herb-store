@@ -10,6 +10,9 @@ const Dashboard = ({ handleTabClick }) => {
     const product = AllProducts.find((product) => product.id === productId);
     setSelectedProduct(product);
   };
+  const handleBack = () => {
+    setSelectedProduct(null);
+};
 
   return (
     <div className="grid gap-4">
@@ -96,6 +99,7 @@ const Dashboard = ({ handleTabClick }) => {
               description={selectedProduct.description}
               feature={selectedProduct.feature}
               cost={selectedProduct.cost}
+              handleBack={handleBack}
             />
           )}
         </div>
