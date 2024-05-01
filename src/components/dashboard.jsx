@@ -1,18 +1,41 @@
 import { Card, Select } from "antd";
 import React, { useState } from "react";
-import { AllProducts } from "./data";
 import Product from "./product";
 
-const Dashboard = ({ handleTabClick }) => {
+const Dashboard = ({ handleTabClick, allProducts }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [tagFilter, setTagFilter] = useState("");
+  const [diseaseFilter, setDiseaseFilter] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(allProducts); // Initial filtered products
 
   const handleClick = (productId) => {
-    const product = AllProducts.find((product) => product.id === productId);
+    const product = allProducts.find((product) => product.id === productId);
     setSelectedProduct(product);
   };
+
   const handleBack = () => {
     setSelectedProduct(null);
-};
+  };
+
+  const handleSearch = () => {
+    const results = searchProducts(tagFilter, diseaseFilter);
+    setFilteredProducts(results); // Update filtered products on search
+  };
+
+  const clearSearch = () => {
+    setTagFilter(""); // Reset tag filter
+    setDiseaseFilter(""); // Reset disease filter
+    setFilteredProducts(allProducts); // Set filtered products back to all
+  };
+
+  function searchProducts(tagFilter, diseaseFilter) {
+    return allProducts.filter((product) => {
+      const tagMatches = !tagFilter || product.tag === tagFilter;
+      const diseaseMatches =
+        !diseaseFilter || product.disease === diseaseFilter;
+      return tagMatches && diseaseMatches;
+    });
+  }
 
   return (
     <div className="grid gap-4">
@@ -36,11 +59,12 @@ const Dashboard = ({ handleTabClick }) => {
           Logout
         </li>
       </ul>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid  grid-cols-4 gap-2">
         <div className="col-span-1 bg-white p-4 h-max grid gap-5 rounded-xl">
-          <p className="uppercase text-2xl">Select disease</p>
+          <p className="font-semibold text-2xl">Select disease</p>
           <Select
             placeholder="Select Disease"
+            onChange={(value) => setDiseaseFilter(value)}
             options={[
               {
                 value: "Asthma",
@@ -59,21 +83,51 @@ const Dashboard = ({ handleTabClick }) => {
                 label: "Eczema",
               },
               {
+                value: "Cold",
+                label: "Cold",
+              },
+              {
                 value: "Fibromyalgia",
                 label: "Fibromyalgia",
               },
             ]}
           />
-          <button className="border bg-gray-200 w-max px-4 rounded">
-            Search
-          </button>
+          <p className="font-medium text-2xl">Fruit or Herb</p>
+          <Select
+            defaultValue={"Fruit"}
+            onChange={(value) => setTagFilter(value)}
+            options={[
+              {
+                value: "Herb",
+                label: "Herb",
+              },
+              {
+                value: "Fruit",
+                label: "Fruit",
+              },
+            ]}
+          />
+          <div className="flex w-full justify-between">
+            <button
+              className="border bg-green-500 hover:bg-green-400 hover:scale-105 transition-all duration-500 ease-in-out font-semibold w-max px-4 rounded-lg"
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+            <button
+              className="border bg-green-500 hover:bg-green-400 hover:scale-105 transition-all duration-500 ease-in-out font-semibold w-max px-4 rounded-lg"
+              onClick={clearSearch}
+            >
+              Clear Search
+            </button>
+          </div>
         </div>
         <div className="col-span-3 bg-white rounded-xl p-4">
           {!selectedProduct && (
             <div>
               <p className="font-semibold text-xl">All Products</p>
               <div className="grid grid-cols-3 gap-2">
-                {AllProducts.map((product) => (
+                {filteredProducts.map((product) => (
                   <div
                     key={product.id}
                     onClick={() => handleClick(product.id)}
